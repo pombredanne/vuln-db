@@ -20,7 +20,7 @@ jobs:
           python-version: 3.7
 
       - name: run updateDB script
-        run: which python
+        run: which python3
 
       - name: run updateDB script
         run: ./updateDB.py

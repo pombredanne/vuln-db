@@ -2,8 +2,8 @@
 name: "vuln-db-update"
 
 on:
-  schedule:
-    - cron: "* * * * *"
+  push:
+    branches: [ main ]
 
 jobs:
   update-db:

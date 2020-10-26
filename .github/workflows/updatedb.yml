@@ -2,8 +2,8 @@
 name: "vuln-db-update"
 
 on:
-  push:
-    branches: [ main ]
+  schedule:
+    - cron: "*/30 * * * *"
 
 jobs:
   update-db:
@@ -38,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   notify:
-    if: always()
+    if: failure()
     name: Post Workflow Status To Slack
     needs:
       - update-db

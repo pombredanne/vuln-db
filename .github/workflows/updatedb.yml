@@ -27,11 +27,15 @@ jobs:
       - name: run updateDB script
         run: ./updateDB.py
 
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v5
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+          author_name: SixSq CI Bot
+          author_email: support@sixsq.com
+          message: "Auto DB update from CI"
+          add: "databases"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   notify:
     if: always()

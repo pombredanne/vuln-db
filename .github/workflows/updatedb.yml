@@ -19,8 +19,10 @@ jobs:
         with:
           python-version: 3.7
 
-      - name: run updateDB script
-        run: which python3
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: run updateDB script
         run: ./updateDB.py
@@ -32,7 +34,7 @@ jobs:
           branch: ${{ github.ref }}
 
   notify:
-    if: failure()
+    if: always()
     name: Post Workflow Status To Slack
     needs:
       - update-db

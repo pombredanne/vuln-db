@@ -97,6 +97,7 @@ if regenerate_single_file_dbs:
                 cvss_severity = cvss.get('baseSeverity', cvss.get('severity', ''))
 
                 cve_published = cve_item.get('publishedDate', '')
+                cve_modified = cve_item.get('lastModifiedDate', '')
 
                 cve_url = ''
                 if cve_id.startswith('CVE-'):
@@ -108,7 +109,7 @@ if regenerate_single_file_dbs:
                         # take a random (first) reference to issue
                         cve_url = reference_data[0].get('url', '')
 
-                csv_content += f"{cve_id};{cve_description};{cvss_score};{cvss_severity};{cve_url};{cve_published}\n"
+                csv_content += f"{cve_id};{cve_description};{cvss_score};{cvss_severity};{cve_url};{cve_published};{cve_modified}\n"
 
                 json_content['CVE_Items'].append({
                     'cve': {
@@ -140,7 +141,8 @@ if regenerate_single_file_dbs:
                             }
                         }
                     },
-                    'publishedDate': cve_published
+                    'publishedDate': cve_published,
+                    'lastModifiedDate': cve_modified
                 })
         except KeyError as e:
             print(f"ERR: could not read CVE specific attributes from {k}: {e}")

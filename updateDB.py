@@ -24,8 +24,8 @@ nvd_base_url = "https://nvd.nist.gov"
 nvd_data_feeds = f"{nvd_base_url}/vuln/data-feeds"
 
 my_dbs = "databases"
-csv_full_db = f"{my_dbs}/all.simplified.csv"
-json_full_db = f"{my_dbs}/all.simplified.json"
+csv_full_db = f"{my_dbs}/all.simplified.csv.gz"
+json_full_db = f"{my_dbs}/all.simplified.json.gz"
 
 print(f"Checking local dabatases at {my_dbs}")
 if os.path.exists(my_dbs):
@@ -148,18 +148,10 @@ if regenerate_single_file_dbs:
             print(f"ERR: could not read CVE specific attributes from {k}: {e}")
             continue
 
-    with open(csv_full_db, 'w') as csv:
-        print(f"Writing new single file CSV DB {csv_full_db}...")
-        csv.write(csv_content)
-
-    with gzip.open(csv_full_db + ".gz", "wt") as csvgz:
+    with gzip.open(csv_full_db, "wt") as csvgz:
         print(f"Compressing {csv_full_db}...")
         csvgz.write(csv_content)
 
-    with open(json_full_db, 'w') as j:
-        print(f"Writing new single file JSON DB {json_full_db}...")
-        j.write(json.dumps(json_content))
-
-    with gzip.open(json_full_db + ".gz", "wt") as jsongz:
+    with gzip.open(json_full_db, "wt") as jsongz:
         print(f"Compressing {json_full_db}...")
         jsongz.write(json.dumps(json_content))

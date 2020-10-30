@@ -24,8 +24,8 @@ nvd_base_url = "https://nvd.nist.gov"
 nvd_data_feeds = f"{nvd_base_url}/vuln/data-feeds"
 
 my_dbs = "databases"
-csv_full_db = f"{my_dbs}/all.simplified.csv.gz"
-json_full_db = f"{my_dbs}/all.simplified.json.gz"
+csv_full_db = f"{my_dbs}/all.aggregated.csv.gz"
+json_full_db = f"{my_dbs}/all.aggregated.json.gz"
 
 print(f"Checking local dabatases at {my_dbs}")
 if os.path.exists(my_dbs):

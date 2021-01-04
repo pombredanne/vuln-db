@@ -46,6 +46,7 @@ for feed in my_feeds:
 
     print(f"Fetching NVD feed {feed}")
     r = requests.get(get_url)
+    r.raise_for_status()
     z = zipfile.ZipFile(io.BytesIO(r.content))
 
     for filename in z.namelist():

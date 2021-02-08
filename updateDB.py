@@ -74,7 +74,8 @@ for feed in my_feeds:
         regenerate_single_file_dbs = True
         z.extractall(my_dbs)
 
-if regenerate_single_file_dbs:
+
+if True:
     # Because there are updates to at least 1 NVD DB, we need to regenerate the CSV single file DB
     csv_content = ''
     json_content = {
@@ -100,6 +101,17 @@ if regenerate_single_file_dbs:
                 cve_published = cve_item.get('publishedDate', '')
                 cve_modified = cve_item.get('lastModifiedDate', '')
 
+                # node operators are being ignored for now, so false positive can still occur
+                nodes = cve_item.get('configurations', {}).get('nodes', [])
+
+                all_cpes = []
+                for node in nodes:
+                    cpe_match = node.get('cpe_match', [])
+                    for child in node.get('children', []):
+                        cpe_match += child.get('cpe_match', [])
+
+                    all_cpes += list(map(lambda c: c.get('cpe23Uri', '') if c.get('vulnerable') else '', cpe_match))
+
                 cve_url = ''
                 if cve_id.startswith('CVE-'):
                     # then we can assum the default MITRE CVE base url
@@ -110,7 +122,8 @@ if regenerate_single_file_dbs:
                         # take a random (first) reference to issue
                         cve_url = reference_data[0].get('url', '')
 
-                csv_content += f"{cve_id};{cve_description};{cvss_score};{cvss_severity};{cve_url};{cve_published};{cve_modified}\n"
+                csv_content += f"{cve_id};{cve_description};{cvss_score};{cvss_severity};" \
+                    f"{cve_url};{cve_published};{cve_modified};{' '.join(all_cpes)}\n"
 
                 json_content['CVE_Items'].append({
                     'cve': {

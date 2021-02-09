@@ -75,7 +75,7 @@ for feed in my_feeds:
         z.extractall(my_dbs)
 
 
-if True:
+if regenerate_single_file_dbs:
     # Because there are updates to at least 1 NVD DB, we need to regenerate the CSV single file DB
     csv_content = ''
     json_content = {
@@ -110,7 +110,10 @@ if True:
                     for child in node.get('children', []):
                         cpe_match += child.get('cpe_match', [])
 
-                    all_cpes += list(map(lambda c: c.get('cpe23Uri', '') if c.get('vulnerable') else '', cpe_match))
+                    all_cpes += list(map(lambda c:
+                                         f"{c.get('versionStartExcluding', '')}:{c.get('versionStartIncluding', '')}:"
+                                         f"{c.get('versionEndIncluding', '')}:{c.get('versionEndExcluding', '')}|"
+                                         f"{c.get('cpe23Uri', '')}" if c.get('vulnerable') else '', cpe_match))
 
                 cve_url = ''
                 if cve_id.startswith('CVE-'):

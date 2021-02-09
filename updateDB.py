@@ -75,7 +75,7 @@ for feed in my_feeds:
         z.extractall(my_dbs)
 
 
-if True:
+if regenerate_single_file_dbs:
     # Because there are updates to at least 1 NVD DB, we need to regenerate the CSV single file DB
     csv_content = ''
     json_content = {

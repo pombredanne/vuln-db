@@ -72,7 +72,9 @@ for feed in my_feeds:
         # and thus the whole CSV DB needs updating
         print(f"NVD DB {filename} has been updated - triggering rebuild of the single file simplified databases")
         regenerate_single_file_dbs = True
-        z.extractall(my_dbs)
+        with open(f"{my_dbs}/{filename}", 'w') as f:
+            f.write(json.dumps({"CVE_data_timestamp": nvd_db['CVE_data_timestamp']}))
+        # z.extractall(my_dbs)
 
 
 if regenerate_single_file_dbs:

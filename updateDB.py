@@ -51,7 +51,7 @@ for feed in my_feeds:
 
     for filename in z.namelist():
         nvd_db = json.loads(z.read(filename))
-        if filename+".gzip" in dbs:
+        if filename+".gz" in dbs:
             try:
                 with gzip.open(f"{my_dbs}/{filename}") as f:
                     json_content = json.loads(f.read().decode('utf-8'))
@@ -81,7 +81,7 @@ for feed in my_feeds:
         # with open(f"{my_dbs}/{filename}", 'w') as f:
         #     f.write(json.dumps({"CVE_data_timestamp": nvd_db['CVE_data_timestamp']}))
         # z.extractall(my_dbs)
-        with gzip.open(f"{my_dbs}/{filename}", "wt") as jsondbgz:
+        with gzip.open(f"{my_dbs}/{filename}.gz", "wt") as jsondbgz:
             jsondbgz.write(json.dumps(nvd_db))
 
 

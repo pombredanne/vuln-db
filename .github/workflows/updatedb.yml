@@ -3,7 +3,7 @@ name: "vuln-db-update"
 
 on:
   schedule:
-    - cron: "*/3 * * * *"
+    - cron: "*/5 * * * *"
 
 jobs:
   update-db:

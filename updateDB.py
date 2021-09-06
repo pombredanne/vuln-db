@@ -51,9 +51,15 @@ for feed in my_feeds:
 
     for filename in z.namelist():
         nvd_db = json.loads(z.read(filename))
-        if filename in dbs:
-            with open(f"{my_dbs}/{filename}") as f:
-                cache_db[filename] = json.loads(f.read())
+        if filename+".gzip" in dbs:
+            try:
+                with gzip.open(f"{my_dbs}/{filename}") as f:
+                    json_content = json.loads(f.read().decode('utf-8'))
+                    cache_db[filename] = json_content
+            except:
+                cache_db = {
+                    'CVE_data_timestamp': 0
+                    }
 
             try:
                 if nvd_db['CVE_data_timestamp'] <= cache_db[filename]['CVE_data_timestamp']:
@@ -72,9 +78,11 @@ for feed in my_feeds:
         # and thus the whole CSV DB needs updating
         print(f"NVD DB {filename} has been updated - triggering rebuild of the single file simplified databases")
         regenerate_single_file_dbs = True
-        with open(f"{my_dbs}/{filename}", 'w') as f:
-            f.write(json.dumps({"CVE_data_timestamp": nvd_db['CVE_data_timestamp']}))
+        # with open(f"{my_dbs}/{filename}", 'w') as f:
+        #     f.write(json.dumps({"CVE_data_timestamp": nvd_db['CVE_data_timestamp']}))
         # z.extractall(my_dbs)
+        with gzip.open(f"{my_dbs}/{filename}", "wt") as jsondbgz:
+            jsondbgz.write(json.dumps(nvd_db))
 
 
 if regenerate_single_file_dbs:
